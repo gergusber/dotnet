@@ -6,6 +6,7 @@ using api.Models.Products;
 public interface IUserService
 {
   IEnumerable<Products> GetAll();
+  ProductStatusResponse GetByStatus();
   Products GetById(int id);
   void Create(ProductCreateRequest model);
   void Update(int id, ProductUpdateRequest model);
@@ -58,8 +59,6 @@ public class UserService : IUserService
     if (model.Name != prd.Name && _context.Products.Any(x => x.Name == model.Name))
       throw new Exception("Prd with the Name '" + model.Name + "' already exists");
 
-
-
     // copy model to user and save
     _mapper.Map(model, prd);
     _context.Products.Update(prd);
@@ -80,5 +79,19 @@ public class UserService : IUserService
     var prd = _context.Products.Find(id);
     if (prd == null) throw new KeyNotFoundException("Product not found");
     return prd;
+  }
+
+  public ProductStatusResponse GetByStatus()
+  {
+    var countsByStatus = _context.Products
+      .GroupBy(p => p.Status)
+      .Select(g => new { Status = g.Key, Count = g.Count() })
+      .ToDictionary(x => x.Status, x => x.Count);
+
+    int soldCount = countsByStatus.GetValueOrDefault(ProductsStatus.Sold, 0);
+    int damagedCount = countsByStatus.GetValueOrDefault(ProductsStatus.Damaged, 0);
+    int inStockCount = countsByStatus.GetValueOrDefault(ProductsStatus.InStock, 0);
+
+    return new ProductStatusResponse(soldCount, damagedCount, inStockCount);
   }
 }

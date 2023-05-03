@@ -11,5 +11,12 @@ public class ProductCreateRequest
   public string Description { get; set; }
   public string CategoryName { get; set; }
   public string Weighted { get; set; }
-  public string ProductStatus { get; set; }
+  public ProductsStatus status { get; set; }
+}
+
+public enum ProductsStatus
+{
+  Damaged,
+  InStock,
+  Sold
 }
