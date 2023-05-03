@@ -11,6 +11,8 @@ public class ProductCreateRequest
   public string Description { get; set; }
   public string CategoryName { get; set; }
   public string Weighted { get; set; }
+  public int AmountInStock { get; set; }
+
   public ProductsStatus status { get; set; }
 }
 

@@ -73,4 +73,11 @@ public class ProductsController : ControllerBase
         new { type = "InStock", count = data.CountInStock }
         });
   }
+
+  [HttpPost("sellProduct")]
+  public IActionResult sellProduct([FromBody] CreateSellRequest model)
+  {
+    _userService.sellItem(model);
+    return Ok(new { message = "User created" });
+  }
 }

@@ -17,5 +17,6 @@ public class Products
   public string Description { get; set; }
   public string CategoryName { get; set; }
   public string Weighted { get; set; }
+  public int AmountInStock { get; set; }
   public ProductsStatus Status { get; set; }
 }
